@@ -11,10 +11,15 @@
 
 package org.projectbuendia.client.ui.chart;
 
+import android.app.Activity;
+import android.app.Instrumentation;
+import android.content.Context;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingResource;
 import android.support.test.espresso.web.webdriver.Locator;
 
+import static android.support.test.espresso.Espresso.registerIdlingResources;
 import static android.support.test.espresso.web.assertion.WebViewAssertions.webMatches;
 import static android.support.test.espresso.web.sugar.Web.onWebView;
 import static android.support.test.espresso.web.webdriver.DriverAtoms.findElement;
@@ -24,6 +29,7 @@ import static org.hamcrest.Matchers.containsString;
 
 import android.test.suitebuilder.annotation.MediumTest;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -33,6 +39,7 @@ import org.odk.collect.android.views.ODKView;
 import org.odk.collect.android.widgets2.group.TableWidgetGroup;
 import org.odk.collect.android.widgets2.selectone.ButtonsSelectOneWidget;
 import org.projectbuendia.client.R;
+import org.projectbuendia.client.WebViewIdlingResource;
 import org.projectbuendia.client.events.FetchXformSucceededEvent;
 import org.projectbuendia.client.events.SubmitXformSucceededEvent;
 import org.projectbuendia.client.ui.FunctionalTestCase;
@@ -50,12 +57,13 @@ public class PatientChartActivityTest extends FunctionalTestCase {
     private static final String NO = "○";
     private static final String YES = "●";
 
+    private static WebViewIdlingResource idlingChart;
+
     private static final int ROW_HEIGHT = 84;
 
     public PatientChartActivityTest() {
         super();
     }
-
 
     /**
      * Tests that the general condition dialog successfully changes general condition.
@@ -336,8 +344,24 @@ public class PatientChartActivityTest extends FunctionalTestCase {
         answerTextQuestion("Notes", "Call family");
         saveForm();
 
-        // Check that all values are now visible.
+
         waitForProgressFragment();
+        //Wait for webview to reload and scripts to run
+        /*try{
+            Thread.sleep(30000);
+        } catch (InterruptedException e){}
+*/
+
+        WebView chart = null;
+        try {
+            chart = (WebView) getCurrentActivity().findViewById(R.id.chart_webview);
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+        idlingChart = new WebViewIdlingResource(chart);
+        Espresso.registerIdlingResources(idlingChart);
+
+        // Check that all values are now visible.
         checkObservationValueEquals("[test] Temperature (°C)", "36");
         checkObservationValueEquals("[test] Respiratory rate (bpm)", "23");
         checkObservationValueEquals("[test] SpO₂ oxygen sat (%)", "95");

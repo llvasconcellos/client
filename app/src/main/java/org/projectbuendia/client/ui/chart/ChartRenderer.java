@@ -94,8 +94,8 @@ public class ChartRenderer {
         // If we call loadData twice, it works.  TODO: Figure out what's going on.
         mView.loadDataWithBaseURL("file:///android_asset/", html,
             "text/html; charset=utf-8", "utf-8", null);
-        mView.loadDataWithBaseURL("file:///android_asset/", html,
-            "text/html; charset=utf-8", "utf-8", null);
+        /*mView.loadDataWithBaseURL("file:///android_asset/", html,
+            "text/html; charset=utf-8", "utf-8", null);*/
         mView.setWebContentsDebuggingEnabled(true);
 
         mLastRenderedObs = observations;

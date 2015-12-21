@@ -10,21 +10,9 @@
     OR CONDITIONS OF ANY KIND, either express or implied.  See the License for
     specific language governing permissions and limitations under the License.
 -->
-<!--
-    A view that wraps the content view for most activities so that a status bar for important
-    information can be displayed if needed.
--->
-<LinearLayout
+<shape
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:shape="rectangle">
 
-    <!-- The FrameLayout that contains wrapped content. -->
-    <FrameLayout
-        android:id="@+id/status_wrapper_inner_content"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-
-</LinearLayout>
+    <solid android:color="@color/transparent" />
+</shape>

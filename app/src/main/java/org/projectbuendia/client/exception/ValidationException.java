@@ -9,11 +9,27 @@
 // OR CONDITIONS OF ANY KIND, either express or implied.  See the License for
 // specific language governing permissions and limitations under the License.
 
-package org.projectbuendia.client.models;
+package org.projectbuendia.client.exception;
 
-/** Chart section type identifiers, used in the ChartItems.SECTION_TYPE column. */
-public enum ChartSectionType {
-    CHART_DIVIDER,
-    TILE_ROW,
-    GRID_SECTION
+/**
+ * The base class for all validation exceptions.
+ *
+ * @author Vinicius Boson
+ */
+public class ValidationException extends Exception {
+    public ValidationException(String message) {
+        super( message );
+    }
+
+    public ValidationException() {
+        super();
+    }
+
+    public ValidationException(String message, Throwable cause) {
+        super( message, cause );
+    }
+
+    public ValidationException(Throwable cause) {
+        super( cause );
+    }
 }
